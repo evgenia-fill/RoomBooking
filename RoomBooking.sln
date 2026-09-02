@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomBooking", "RoomBooking.csproj", "{38AC1B4D-58C8-4412-AC77-0C85CF246957}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomBooking.Domain", "src\RoomBooking.Domain\RoomBooking.Domain.csproj", "{706A1198-6D09-4C41-88A0-4B59BAD7C24F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8BA495AE-F9DF-4814-AA77-7033C26F0083}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +31,23 @@ Global
 		{38AC1B4D-58C8-4412-AC77-0C85CF246957}.Release|x64.Build.0 = Release|Any CPU
 		{38AC1B4D-58C8-4412-AC77-0C85CF246957}.Release|x86.ActiveCfg = Release|Any CPU
 		{38AC1B4D-58C8-4412-AC77-0C85CF246957}.Release|x86.Build.0 = Release|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Debug|x64.Build.0 = Debug|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Debug|x86.Build.0 = Debug|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Release|x64.ActiveCfg = Release|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Release|x64.Build.0 = Release|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Release|x86.ActiveCfg = Release|Any CPU
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{706A1198-6D09-4C41-88A0-4B59BAD7C24F} = {8BA495AE-F9DF-4814-AA77-7033C26F0083}
 	EndGlobalSection
 EndGlobal
