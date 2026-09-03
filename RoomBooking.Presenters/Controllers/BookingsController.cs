@@ -13,14 +13,14 @@ public class BookingsController : ControllerBase
         return Ok("Booking created");
     }
 
-    [HttpPost("{bookingId}/cancel")]
-    public async Task<IActionResult> CancelBooking(int bookingId)
+    [HttpPost("{bookingId:int}/cancel")]
+    public async Task<IActionResult> CancelBooking([FromRoute] int bookingId)
     {
         return Ok("Booking cancelled");
     }
 
-    [HttpGet("{bookingId}")]
-    public async Task<IActionResult> GetById([FromRoute]int bookingId, CancellationToken cancellationToken)
+    [HttpGet("{bookingId:int}")]
+    public async Task<IActionResult> GetById([FromRoute] int bookingId, CancellationToken cancellationToken)
     {
         return Ok($"Booking {bookingId} has been retrieved");
     }
@@ -31,36 +31,39 @@ public class BookingsController : ControllerBase
         return Ok("List of all bookings");
     }
 
-    [HttpPatch("{bookingId}/title")]
-    public async Task<IActionResult> ChangeBookingTitle(int bookingId, [FromBody] ChangeBookingTitleDto dto,
+    [HttpPatch("{bookingId:int}/title")]
+    public async Task<IActionResult> ChangeBookingTitle([FromRoute] int bookingId, [FromBody] ChangeBookingTitleDto dto,
         CancellationToken cancellationToken)
     {
         return Ok("Title has changed");
     }
 
-    [HttpPatch("{bookingId}/description")]
-    public async Task<IActionResult> ChangeBookingDescription(int bookingId, [FromBody] ChangeBookingDescriptionDto dto,
+    [HttpPatch("{bookingId:int}/description")]
+    public async Task<IActionResult> ChangeBookingDescription([FromRoute] int bookingId,
+        [FromBody] ChangeBookingDescriptionDto dto,
         CancellationToken cancellationToken)
     {
         return Ok("Description has changed");
     }
 
-    [HttpPatch("{bookingId}/startTime")]
-    public async Task<IActionResult> ChangeBookingStartTime(int bookingId, [FromBody] ChangeBookingStartTimeDto dto,
+    [HttpPatch("{bookingId:int}/startTime")]
+    public async Task<IActionResult> ChangeBookingStartTime([FromRoute] int bookingId,
+        [FromBody] ChangeBookingStartTimeDto dto,
         CancellationToken cancellationToken)
     {
         return Ok("StartTime has changed");
     }
 
-    [HttpPatch("{bookingId}/endTime")]
-    public async Task<IActionResult> ChangeBookingEndTime(int bookingId, [FromBody] ChangeBookingEndTimeDto dto,
+    [HttpPatch("{bookingId:int}/endTime")]
+    public async Task<IActionResult> ChangeBookingEndTime([FromRoute] int bookingId,
+        [FromBody] ChangeBookingEndTimeDto dto,
         CancellationToken cancellationToken)
     {
         return Ok("EndTime has changed");
     }
 
-    [HttpPatch("{bookingId}/room")]
-    public async Task<IActionResult> ChangeBookingRoom(int bookingId, [FromBody] ChangeBookingRoomDto dto,
+    [HttpPatch("{bookingId:int}/room")]
+    public async Task<IActionResult> ChangeBookingRoom([FromRoute] int bookingId, [FromBody] ChangeBookingRoomDto dto,
         CancellationToken cancellationToken)
     {
         return Ok("Room has changed");
