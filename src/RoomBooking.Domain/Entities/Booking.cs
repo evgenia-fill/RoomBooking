@@ -3,15 +3,15 @@
 public class Booking
 {
     public int Id { get; private set; }
-    public Guid UserId { get; private set; }
-    public int RoomId { get; private set; }
-    public DateTime StartTime { get; private set; }
-    public DateTime EndTime { get; private set; }
     public string Title { get; private set; }
     public string? Description { get; private set; }
+    public Guid UserId { get; private set; }
+    public int RoomId { get; private set; }
+    public DateTimeOffset StartTime { get; private set; }
+    public DateTimeOffset EndTime { get; private set; }
     public BookingStatus Status { get; private set; }
 
-    public Booking(Guid userId, int roomId, string title, string? description, DateTime startTime, DateTime endTime)
+    public Booking(string title, string? description, Guid userId, int roomId, DateTimeOffset startTime, DateTimeOffset endTime)
     {
         if (userId == Guid.Empty) throw new ArgumentException("User ID cannot be empty.", nameof(userId));
         if (roomId <= 0) throw new ArgumentOutOfRangeException(nameof(roomId), "Room ID must be greater than 0.");
