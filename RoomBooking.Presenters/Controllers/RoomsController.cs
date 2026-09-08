@@ -26,14 +26,21 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPatch("{id:int}/name")]
-    public async Task<IActionResult> ChangeName([FromRoute] int id, [FromBody] ChangeRoomNameDto dto,
+    public async Task<IActionResult> ChangeName([FromRoute] int roomId, [FromBody] ChangeRoomNameDto dto,
+        CancellationToken cancellationToken)
+    {
+        return Ok();
+    }
+
+    [HttpPatch("{id:int}/capacity")]
+    public async Task<IActionResult> ChangeCapacity([FromRoute] int roomId, [FromBody] ChangeRoomCapacityDto dto,
         CancellationToken cancellationToken)
     {
         return Ok();
     }
 
     [HttpGet("{roomId:int}/bookings")]
-    public async Task<IActionResult> GetBookings([FromRoute] int roomId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRoomBookings([FromRoute] int roomId, CancellationToken cancellationToken)
     {
         return Ok();
     }
