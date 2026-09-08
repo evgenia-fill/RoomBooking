@@ -20,7 +20,11 @@ public class BookingsService
 
     public async Task CancelBookingAsync(int bookingId, CancellationToken cancellationToken)
     {
-        await _bookingRepository.DeleteAsync(bookingId, cancellationToken);
+        var booking = await _bookingRepository.GetByIdAsync(bookingId, cancellationToken);
+        if (booking == null) throw new KeyNotFoundException("Booking not found");
+
+        booking.Cancel();
+        await _bookingRepository.UpdateAsync(booking, cancellationToken);
     }
 
     public async Task<Booking?> GetByIdAsync(int bookingId, CancellationToken cancellationToken)

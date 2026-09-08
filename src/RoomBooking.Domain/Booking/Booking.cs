@@ -42,7 +42,7 @@ public class Booking
 
     public void ChangeSchedule(DateTimeOffset newStartTime, DateTimeOffset newEndTime)
     {
-        if (newEndTime <= newStartTime) 
+        if (newEndTime <= newStartTime)
             throw new ArgumentException("End time must be greater than start time.");
 
         StartTime = newStartTime;
@@ -53,5 +53,10 @@ public class Booking
     {
         if (roomId == 0) throw new ArgumentException("Room ID cannot be empty.", nameof(roomId));
         RoomId = roomId;
+    }
+
+    public void Cancel()
+    {
+        Status = BookingStatus.Cancelled;
     }
 }
