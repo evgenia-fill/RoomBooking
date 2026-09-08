@@ -47,7 +47,7 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPatch("{bookingId:int}/schedule")]
-    public async Task<IActionResult> ChangeBookingStartTime([FromRoute] int bookingId,
+    public async Task<IActionResult> ChangeBookingSchedule([FromRoute] int bookingId,
         [FromBody] ChangeBookingScheduleDto dto,
         CancellationToken cancellationToken)
     {
