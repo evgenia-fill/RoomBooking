@@ -33,6 +33,12 @@ public class BookingsService
         return await _bookingRepository.GetAllAsync(cancellationToken);
     }
 
+    public async Task<List<Booking>> GetByRoomIdAsync(int roomId,
+        CancellationToken cancellationToken)
+    {
+        return await _bookingRepository.GetByRoomIdAsync(roomId, cancellationToken);
+    }
+
     public async Task ChangeBookingTitleAsync(int bookingId, ChangeBookingTitleDto dto,
         CancellationToken cancellationToken)
     {

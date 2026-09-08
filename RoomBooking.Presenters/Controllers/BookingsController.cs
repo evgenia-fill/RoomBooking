@@ -31,6 +31,13 @@ public class BookingsController : ControllerBase
         return Ok("List of all bookings");
     }
 
+    [HttpGet("{bookingId:int}/bookings")]
+    public async Task<IActionResult> GetByRoomId([FromRoute] int roomId,
+        CancellationToken cancellationToken)
+    {
+        return Ok($"Bookings has been retrieved");
+    }
+
     [HttpPatch("{bookingId:int}/title")]
     public async Task<IActionResult> ChangeBookingTitle([FromRoute] int bookingId, [FromBody] ChangeBookingTitleDto dto,
         CancellationToken cancellationToken)

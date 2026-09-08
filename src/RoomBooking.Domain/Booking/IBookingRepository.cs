@@ -10,5 +10,7 @@ public interface IBookingRepository
 
     Task<List<Booking>> GetAllAsync(CancellationToken cancellationToken);
 
+    Task<List<Booking>> GetByRoomIdAsync(int roomId, CancellationToken cancellationToken);
+
     Task UpdateAsync(Booking booking, CancellationToken cancellationToken);
 }
