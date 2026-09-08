@@ -14,7 +14,7 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPost("{bookingId:int}/cancel")]
-    public async Task<IActionResult> CancelBooking([FromRoute] int bookingId)
+    public async Task<IActionResult> CancelBooking([FromRoute] int bookingId, CancellationToken cancellationToken)
     {
         return Ok("Booking cancelled");
     }
@@ -46,20 +46,12 @@ public class BookingsController : ControllerBase
         return Ok("Description has changed");
     }
 
-    [HttpPatch("{bookingId:int}/startTime")]
+    [HttpPatch("{bookingId:int}/schedule")]
     public async Task<IActionResult> ChangeBookingStartTime([FromRoute] int bookingId,
-        [FromBody] ChangeBookingStartTimeDto dto,
+        [FromBody] ChangeBookingScheduleDto dto,
         CancellationToken cancellationToken)
     {
-        return Ok("StartTime has changed");
-    }
-
-    [HttpPatch("{bookingId:int}/endTime")]
-    public async Task<IActionResult> ChangeBookingEndTime([FromRoute] int bookingId,
-        [FromBody] ChangeBookingEndTimeDto dto,
-        CancellationToken cancellationToken)
-    {
-        return Ok("EndTime has changed");
+        return Ok("Schedule has changed");
     }
 
     [HttpPatch("{bookingId:int}/room")]
