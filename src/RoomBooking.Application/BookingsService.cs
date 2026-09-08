@@ -54,7 +54,7 @@ public class BookingsService
         await _bookingRepository.UpdateAsync(booking, cancellationToken);
     }
 
-    public async Task ChangeBookingStartTimeAsync(int bookingId,
+    public async Task ChangeBookingScheduleAsync(int bookingId,
         ChangeBookingScheduleDto dto,
         CancellationToken cancellationToken)
     {
