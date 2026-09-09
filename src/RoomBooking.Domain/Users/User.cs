@@ -2,7 +2,7 @@ namespace RoomBooking.Domain.Users;
 
 public class User
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; }
     public string Name { get; private set; }
     public string Email { get; private set; }
     public string PasswordHash { get; private set; }

@@ -2,7 +2,7 @@ namespace RoomBooking.Domain.Rooms;
 
 public class Room
 {
-    public int Id { get; private set; }
+    public int Id { get; }
     public string Name { get; private set; }
     public int Capacity { get; private set; }
     public RoomStatus Status { get; private set; }
