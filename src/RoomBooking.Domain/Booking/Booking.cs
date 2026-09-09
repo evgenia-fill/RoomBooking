@@ -2,7 +2,7 @@
 
 public class Booking
 {
-    public int Id { get; private set; }
+    public Guid Id { get; private set; }
     public string Title { get; private set; }
     public string? Description { get; private set; }
     public Guid UserId { get; private set; }
@@ -19,6 +19,7 @@ public class Booking
         if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title), "Title cannot be empty.");
         if (endTime <= startTime) throw new ArgumentException("End time must be greater than start time.");
 
+        Id = Guid.NewGuid();
         Title = title;
         Description = description;
         UserId = userId;
