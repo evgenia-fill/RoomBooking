@@ -7,6 +7,12 @@ namespace RoomBooking.Presenters.Controllers;
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateUserDto dto, CancellationToken cancellationToken)
+    {
+        return Ok();
+    }
+
     [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetById([FromRoute] Guid userId, CancellationToken cancellationToken)
     {
@@ -31,6 +37,18 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("{userId:guid}/bookings")]
+    public async Task<IActionResult> GetUserBookings([FromRoute] Guid userId, CancellationToken cancellationToken)
+    {
+        return Ok();
+    }
+
+    [HttpDelete("{userId:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid userId, CancellationToken cancellationToken)
+    {
+        return Ok();
+    }
+
     [HttpPatch("{userId:guid}/name")]
     public async Task<IActionResult> ChangeName([FromRoute] Guid userId, [FromBody] ChangeUserNameDto dto,
         CancellationToken cancellationToken)
@@ -48,12 +66,6 @@ public class UsersController : ControllerBase
     [HttpPatch("{userId:guid}/password")]
     public async Task<IActionResult> ChangePassword([FromRoute] Guid userId, [FromBody] ChangeUserPasswordDto dto,
         CancellationToken cancellationToken)
-    {
-        return Ok();
-    }
-
-    [HttpGet("{userId:guid}/bookings")]
-    public async Task<IActionResult> GetUserBookings([FromRoute] Guid userId, CancellationToken cancellationToken)
     {
         return Ok();
     }
