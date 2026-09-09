@@ -1,4 +1,4 @@
-namespace RoomBooking.Domain.User;
+namespace RoomBooking.Domain.Users;
 
 public interface IUserRepository
 {

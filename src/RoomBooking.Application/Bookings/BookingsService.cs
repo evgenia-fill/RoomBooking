@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Logging;
-using RoomBooking.Contracts.Booking;
-using RoomBooking.Domain.Booking;
+using RoomBooking.Contracts.Bookings;
+using RoomBooking.Domain.Bookings;
 
-namespace RoomBooking.Application;
+namespace RoomBooking.Application.Bookings;
 
 public class BookingsService
 {
@@ -17,7 +17,8 @@ public class BookingsService
 
     public async Task<Booking> CreateAsync(CreateBookingDto dto, CancellationToken cancellationToken)
     {
-        var booking = new Booking(dto.Title, dto.Description, dto.UserId, dto.RoomId, dto.StartTime, dto.EndTime);
+        var booking = new Booking(dto.Title, dto.Description, dto.UserId, dto.RoomId, dto.StartTime,
+            dto.EndTime);
         _logger.LogInformation("Booking created with Id: {BookingId}", booking.Id);
         return await _bookingRepository.AddAsync(booking, cancellationToken);
     }

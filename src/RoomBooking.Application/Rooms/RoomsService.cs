@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
-using RoomBooking.Contracts.Room;
-using RoomBooking.Domain.Booking;
-using RoomBooking.Domain.Room;
+using RoomBooking.Contracts.Rooms;
+using RoomBooking.Domain.Bookings;
+using RoomBooking.Domain.Rooms;
 
-namespace RoomBooking.Application;
+namespace RoomBooking.Application.Rooms;
 
 public class RoomsService
 {

@@ -1,4 +1,4 @@
-namespace RoomBooking.Domain.Room;
+namespace RoomBooking.Domain.Rooms;
 
 public class Room
 {

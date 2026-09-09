@@ -1,3 +1,3 @@
-namespace RoomBooking.Contracts.Room;
+namespace RoomBooking.Contracts.Rooms;
 
 public record ChangeRoomNameDto(string Name);

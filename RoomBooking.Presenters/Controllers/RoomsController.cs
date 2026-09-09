@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using RoomBooking.Contracts.Room;
+using RoomBooking.Contracts.Rooms;
 
 namespace RoomBooking.Presenters.Controllers;
 
