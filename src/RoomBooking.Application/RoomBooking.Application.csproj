@@ -11,4 +11,8 @@
       <ProjectReference Include="..\RoomBooking.Domain\RoomBooking.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.20" />
+    </ItemGroup>
+
 </Project>

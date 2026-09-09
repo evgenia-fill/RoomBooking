@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using RoomBooking.Contracts.User;
 using RoomBooking.Domain.Booking;
 using RoomBooking.Domain.User;
@@ -8,11 +9,14 @@ public class UsersService
 {
     private readonly IUserRepository _userRepository;
     private readonly IBookingRepository _bookingRepository;
+    private readonly ILogger<UsersService> _logger;
 
-    public UsersService(IUserRepository userRepository, IBookingRepository bookingRepository)
+    public UsersService(IUserRepository userRepository, IBookingRepository bookingRepository,
+        ILogger<UsersService> logger)
     {
         _userRepository = userRepository;
         _bookingRepository = bookingRepository;
+        _logger = logger;
     }
 
     public async Task<User> Create(CreateUserDto dto, CancellationToken cancellationToken)
@@ -21,6 +25,7 @@ public class UsersService
         if (existingUser != null) throw new Exception("User is already exist");
 
         var user = new User(dto.Name, dto.Email, dto.PasswordHash);
+        _logger.LogInformation("User created with Id: {UserId}", user.Id);
         return await _userRepository.AddAsync(user, cancellationToken);
     }
 
@@ -48,6 +53,7 @@ public class UsersService
     public async Task Delete(Guid userId, CancellationToken cancellationToken)
     {
         await _userRepository.DeleteAsync(userId, cancellationToken);
+        _logger.LogInformation("User deleted with Id: {UserId}", userId);
     }
 
     public async Task ChangeNameAsync(Guid userId, ChangeUserNameDto dto,
@@ -58,6 +64,8 @@ public class UsersService
 
         user.ChangeName(dto.Name);
         await _userRepository.UpdateAsync(user, cancellationToken);
+
+        _logger.LogInformation("User updated (changed name) with Id: {UserId}", user.Id);
     }
 
     public async Task ChangeEmailAsync(Guid userId, ChangeUserEmailDto dto,
@@ -71,6 +79,8 @@ public class UsersService
 
         user.ChangeEmail(dto.Email);
         await _userRepository.UpdateAsync(user, cancellationToken);
+
+        _logger.LogInformation("User updated (changed email) with Id: {UserId}", user.Id);
     }
 
     public async Task ChangePasswordAsync(Guid userId, ChangeUserPasswordDto dto,
@@ -81,5 +91,7 @@ public class UsersService
 
         user.ChangePassword(dto.PasswordHash);
         await _userRepository.UpdateAsync(user, cancellationToken);
+
+        _logger.LogInformation("User updated (changed passwordHash) with Id: {UserId}", user.Id);
     }
 }

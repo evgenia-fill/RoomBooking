@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using RoomBooking.Contracts.Room;
 using RoomBooking.Domain.Booking;
 using RoomBooking.Domain.Room;
@@ -8,11 +9,22 @@ public class RoomsService
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IBookingRepository _bookingRepository;
+    private readonly ILogger<RoomsService> _logger;
 
-    public RoomsService(IRoomRepository roomRepository, IBookingRepository bookingRepository)
+    public RoomsService(IRoomRepository roomRepository, IBookingRepository bookingRepository,
+        ILogger<RoomsService> logger)
     {
         _roomRepository = roomRepository;
         _bookingRepository = bookingRepository;
+        _logger = logger;
+    }
+
+    public async Task<Room> CreateAsync(CreateRoomDto dto, CancellationToken cancellationToken)
+    {
+        var room = new Room(dto.Name, dto.Capacity);
+        var createdRoom = await _roomRepository.AddAsync(room, cancellationToken);
+        _logger.LogInformation("Room created with Id: {RoomId}", createdRoom.Id);
+        return createdRoom;
     }
 
     public async Task<Room?> GetByIdAsync(int roomId, CancellationToken cancellationToken)
@@ -25,12 +37,6 @@ public class RoomsService
         return await _roomRepository.GetAllAsync(cancellationToken);
     }
 
-    public async Task CreateAsync(CreateRoomDto dto, CancellationToken cancellationToken)
-    {
-        var newRoom = new Room(dto.Name, dto.Capacity);
-        await _roomRepository.AddAsync(newRoom, cancellationToken);
-    }
-
     public async Task ChangeNameAsync(int roomId, ChangeRoomNameDto dto,
         CancellationToken cancellationToken)
     {
@@ -39,6 +45,8 @@ public class RoomsService
 
         room.ChangeName(dto.Name);
         await _roomRepository.UpdateAsync(room, cancellationToken);
+
+        _logger.LogInformation("Room updated (changed name) with Id: {RoomId}", room.Id);
     }
 
     public async Task ChangeCapacityAsync(int roomId, ChangeRoomCapacityDto dto,
@@ -49,6 +57,8 @@ public class RoomsService
 
         room.ChangeCapacity(dto.Capacity);
         await _roomRepository.UpdateAsync(room, cancellationToken);
+
+        _logger.LogInformation("Room updated (changed capacity) with Id: {RoomId}", room.Id);
     }
 
     public async Task<List<Booking>> GetRoomBookingsAsync(int roomId, CancellationToken cancellationToken)
@@ -66,5 +76,7 @@ public class RoomsService
 
         room.Archive();
         await _roomRepository.UpdateAsync(room, cancellationToken);
+
+        _logger.LogInformation("Room deleted with Id: {RoomId}", room.Id);
     }
 }

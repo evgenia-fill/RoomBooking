@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using RoomBooking.Contracts.Booking;
 using RoomBooking.Domain.Booking;
 
@@ -6,16 +7,19 @@ namespace RoomBooking.Application;
 public class BookingsService
 {
     private readonly IBookingRepository _bookingRepository;
+    private readonly ILogger<BookingsService> _logger;
 
-    public BookingsService(IBookingRepository bookingRepository)
+    public BookingsService(IBookingRepository bookingRepository, ILogger<BookingsService> logger)
     {
         _bookingRepository = bookingRepository;
+        _logger = logger;
     }
 
-    public async Task CreateAsync(CreateBookingDto dto, CancellationToken cancellationToken)
+    public async Task<Booking> CreateAsync(CreateBookingDto dto, CancellationToken cancellationToken)
     {
-        var newBooking = new Booking(dto.Title, dto.Description, dto.UserId, dto.RoomId, dto.StartTime, dto.EndTime);
-        await _bookingRepository.AddAsync(newBooking, cancellationToken);
+        var booking = new Booking(dto.Title, dto.Description, dto.UserId, dto.RoomId, dto.StartTime, dto.EndTime);
+        _logger.LogInformation("Booking created with Id: {BookingId}", booking.Id);
+        return await _bookingRepository.AddAsync(booking, cancellationToken);
     }
 
     public async Task CancelBookingAsync(int bookingId, CancellationToken cancellationToken)
@@ -25,6 +29,8 @@ public class BookingsService
 
         booking.Cancel();
         await _bookingRepository.UpdateAsync(booking, cancellationToken);
+
+        _logger.LogInformation("Booking canceled with Id: {BookingId}", booking.Id);
     }
 
     public async Task<Booking?> GetByIdAsync(int bookingId, CancellationToken cancellationToken)
@@ -42,7 +48,7 @@ public class BookingsService
     {
         return await _bookingRepository.GetByRoomIdAsync(roomId, cancellationToken);
     }
-    
+
     public async Task<List<Booking>> GetByUserIdAsync(Guid userId,
         CancellationToken cancellationToken)
     {
@@ -57,6 +63,8 @@ public class BookingsService
 
         booking.ChangeTitle(dto.Title);
         await _bookingRepository.UpdateAsync(booking, cancellationToken);
+
+        _logger.LogInformation("Booking updated (changed title) with Id: {BookingId}", booking.Id);
     }
 
     public async Task ChangeBookingDescriptionAsync(int bookingId,
@@ -68,6 +76,8 @@ public class BookingsService
 
         booking.ChangeDescription(dto.Description);
         await _bookingRepository.UpdateAsync(booking, cancellationToken);
+
+        _logger.LogInformation("Booking updated (changed description) with Id: {BookingId}", booking.Id);
     }
 
     public async Task ChangeBookingScheduleAsync(int bookingId,
@@ -79,6 +89,8 @@ public class BookingsService
 
         booking.ChangeSchedule(dto.StartTime, dto.EndTime);
         await _bookingRepository.UpdateAsync(booking, cancellationToken);
+
+        _logger.LogInformation("Booking updated (changed schedule) with Id: {BookingId}", booking.Id);
     }
 
     public async Task ChangeBookingRoomAsync(int bookingId, ChangeBookingRoomDto dto,
@@ -89,5 +101,7 @@ public class BookingsService
 
         booking.ChangeRoom(dto.RoomId);
         await _bookingRepository.UpdateAsync(booking, cancellationToken);
+
+        _logger.LogInformation("Booking updated (changed room) with Id: {BookingId}", booking.Id);
     }
 }
