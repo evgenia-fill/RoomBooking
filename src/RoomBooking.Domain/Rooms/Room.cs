@@ -1,3 +1,5 @@
+using RoomBooking.Domain.Bookings;
+
 namespace RoomBooking.Domain.Rooms;
 
 public class Room
@@ -6,6 +8,7 @@ public class Room
     public string Name { get; private set; }
     public int Capacity { get; private set; }
     public RoomStatus Status { get; private set; }
+    public List<Booking> Bookings { get; private set; }
 
     public Room(string name, int capacity)
     {
