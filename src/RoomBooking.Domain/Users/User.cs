@@ -1,3 +1,5 @@
+using RoomBooking.Domain.Bookings;
+
 namespace RoomBooking.Domain.Users;
 
 public class User
@@ -6,6 +8,7 @@ public class User
     public string Name { get; private set; }
     public string Email { get; private set; }
     public string PasswordHash { get; private set; }
+    public List<Booking>  Bookings { get; private set; }
 
     public User(string name, string email, string passwordHash)
     {

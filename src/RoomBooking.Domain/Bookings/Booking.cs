@@ -1,4 +1,7 @@
-﻿namespace RoomBooking.Domain.Bookings;
+﻿using RoomBooking.Domain.Rooms;
+using RoomBooking.Domain.Users;
+
+namespace RoomBooking.Domain.Bookings;
 
 public class Booking
 {
@@ -6,7 +9,9 @@ public class Booking
     public string Title { get; private set; }
     public string? Description { get; private set; }
     public Guid UserId { get; private set; }
+    public User User { get; private set; }
     public int RoomId { get; private set; }
+    public Room Room { get; private set; }
     public DateTimeOffset StartTime { get; private set; }
     public DateTimeOffset EndTime { get; private set; }
     public BookingStatus Status { get; private set; }
