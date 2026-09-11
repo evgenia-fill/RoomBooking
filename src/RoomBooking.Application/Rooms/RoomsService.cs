@@ -5,7 +5,7 @@ using RoomBooking.Domain.Rooms;
 
 namespace RoomBooking.Application.Rooms;
 
-public class RoomsService
+public class RoomsService : IRoomService
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IBookingRepository _bookingRepository;
