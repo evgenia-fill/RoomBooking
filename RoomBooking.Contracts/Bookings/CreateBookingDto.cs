@@ -1,4 +1,4 @@
-namespace RoomBooking.Contracts.Booking;
+namespace RoomBooking.Contracts.Bookings;
 
 public record CreateBookingDto(
     string Title,

@@ -1,71 +1,88 @@
 using Microsoft.AspNetCore.Mvc;
-using RoomBooking.Contracts.Booking;
+using RoomBooking.Application.Bookings;
+using RoomBooking.Contracts.Bookings;
 
 namespace RoomBooking.Presenters.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class BookingsController : ControllerBase
 {
+    private readonly IBookingService _bookingService;
+
+    public BookingsController(IBookingService bookingService)
+    {
+        _bookingService = bookingService;
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateBookingDto dto, CancellationToken cancellationToken)
     {
-        return Ok("Booking created");
+        var booking = await _bookingService.CreateAsync(dto, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { bookingId = booking.Id }, booking);
     }
 
-    [HttpPost("{bookingId:int}/cancel")]
-    public async Task<IActionResult> CancelBooking([FromRoute] int bookingId)
+    [HttpPost("{bookingId:guid}/cancel")]
+    public async Task<IActionResult> CancelBooking([FromRoute] Guid bookingId, CancellationToken cancellationToken)
     {
-        return Ok("Booking cancelled");
+        await _bookingService.CancelBookingAsync(bookingId, cancellationToken);
+        return NoContent();
     }
 
-    [HttpGet("{bookingId:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int bookingId, CancellationToken cancellationToken)
+    [HttpGet("{bookingId:guid}")]
+    public async Task<IActionResult> GetById([FromRoute] Guid bookingId, CancellationToken cancellationToken)
     {
-        return Ok($"Booking {bookingId} has been retrieved");
+        var booking = await _bookingService.GetByIdAsync(bookingId, cancellationToken);
+        return Ok(booking);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        return Ok("List of all bookings");
+        var bookings = await _bookingService.GetAllAsync(cancellationToken);
+        return Ok(bookings);
     }
 
-    [HttpPatch("{bookingId:int}/title")]
-    public async Task<IActionResult> ChangeBookingTitle([FromRoute] int bookingId, [FromBody] ChangeBookingTitleDto dto,
+    [HttpGet("{roomId:int}/bookings")]
+    public async Task<IActionResult> GetByRoomId([FromRoute] int roomId,
         CancellationToken cancellationToken)
     {
-        return Ok("Title has changed");
+        var bookings = await _bookingService.GetByRoomIdAsync(roomId, cancellationToken);
+        return Ok(bookings);
     }
 
-    [HttpPatch("{bookingId:int}/description")]
-    public async Task<IActionResult> ChangeBookingDescription([FromRoute] int bookingId,
+    [HttpPatch("{bookingId:guid}/title")]
+    public async Task<IActionResult> ChangeBookingTitle([FromRoute] Guid bookingId,
+        [FromBody] ChangeBookingTitleDto dto,
+        CancellationToken cancellationToken)
+    {
+        await _bookingService.ChangeBookingTitleAsync(bookingId, dto, cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPatch("{bookingId:guid}/description")]
+    public async Task<IActionResult> ChangeBookingDescription([FromRoute] Guid bookingId,
         [FromBody] ChangeBookingDescriptionDto dto,
         CancellationToken cancellationToken)
     {
-        return Ok("Description has changed");
+        await _bookingService.ChangeBookingDescriptionAsync(bookingId, dto, cancellationToken);
+        return NoContent();
     }
 
-    [HttpPatch("{bookingId:int}/startTime")]
-    public async Task<IActionResult> ChangeBookingStartTime([FromRoute] int bookingId,
-        [FromBody] ChangeBookingStartTimeDto dto,
+    [HttpPatch("{bookingId:guid}/schedule")]
+    public async Task<IActionResult> ChangeBookingSchedule([FromRoute] Guid bookingId,
+        [FromBody] ChangeBookingScheduleDto dto,
         CancellationToken cancellationToken)
     {
-        return Ok("StartTime has changed");
+        await _bookingService.ChangeBookingScheduleAsync(bookingId, dto, cancellationToken);
+        return NoContent();
     }
 
-    [HttpPatch("{bookingId:int}/endTime")]
-    public async Task<IActionResult> ChangeBookingEndTime([FromRoute] int bookingId,
-        [FromBody] ChangeBookingEndTimeDto dto,
+    [HttpPatch("{bookingId:guid}/room")]
+    public async Task<IActionResult> ChangeBookingRoom([FromRoute] Guid bookingId, [FromBody] ChangeBookingRoomDto dto,
         CancellationToken cancellationToken)
     {
-        return Ok("EndTime has changed");
-    }
-
-    [HttpPatch("{bookingId:int}/room")]
-    public async Task<IActionResult> ChangeBookingRoom([FromRoute] int bookingId, [FromBody] ChangeBookingRoomDto dto,
-        CancellationToken cancellationToken)
-    {
-        return Ok("Room has changed");
+        await _bookingService.ChangeBookingRoomAsync(bookingId, dto, cancellationToken);
+        return NoContent();
     }
 }
