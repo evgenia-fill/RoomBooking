@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using RoomBooking.Contracts.Rooms;
+using RoomBooking.Domain;
 using RoomBooking.Domain.Bookings;
 using RoomBooking.Domain.Rooms;
 
@@ -10,20 +11,26 @@ public class RoomsService : IRoomService
     private readonly IRoomRepository _roomRepository;
     private readonly IBookingRepository _bookingRepository;
     private readonly ILogger<RoomsService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public RoomsService(IRoomRepository roomRepository, IBookingRepository bookingRepository,
-        ILogger<RoomsService> logger)
+        ILogger<RoomsService> logger, IUnitOfWork unitOfWork)
     {
         _roomRepository = roomRepository;
         _bookingRepository = bookingRepository;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Room> CreateAsync(CreateRoomDto dto, CancellationToken cancellationToken)
     {
         var room = new Room(dto.Name, dto.Capacity);
+        
         var createdRoom = await _roomRepository.AddAsync(room, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
         _logger.LogInformation("Room created with Id: {RoomId}", createdRoom.Id);
+        
         return createdRoom;
     }
 
@@ -44,7 +51,7 @@ public class RoomsService : IRoomService
         if (room == null) throw new KeyNotFoundException("Room not found");
 
         room.ChangeName(dto.Name);
-        await _roomRepository.UpdateAsync(room, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Room updated (changed name) with Id: {RoomId}", room.Id);
     }
@@ -56,7 +63,7 @@ public class RoomsService : IRoomService
         if (room == null) throw new KeyNotFoundException("Room not found");
 
         room.ChangeCapacity(dto.Capacity);
-        await _roomRepository.UpdateAsync(room, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Room updated (changed capacity) with Id: {RoomId}", room.Id);
     }
@@ -75,7 +82,7 @@ public class RoomsService : IRoomService
         if (room == null) throw new KeyNotFoundException("Room not found");
 
         room.Archive();
-        await _roomRepository.UpdateAsync(room, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Room deleted with Id: {RoomId}", room.Id);
     }

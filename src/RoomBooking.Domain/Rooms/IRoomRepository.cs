@@ -6,8 +6,6 @@ public interface IRoomRepository
 
     Task<List<Room>> GetAllAsync(CancellationToken cancellationToken);
 
-    Task UpdateAsync(Room room, CancellationToken cancellationToken);
-
     Task<Room> AddAsync(Room room, CancellationToken cancellationToken);
 
     Task DeleteAsync(Room room, CancellationToken cancellationToken);
