@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using RoomBooking.Application.Bookings;
 using RoomBooking.Contracts.Bookings;
@@ -16,8 +17,16 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateBookingDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateBookingDto dto,
+        [FromServices] IValidator<CreateBookingDto> validator,
+        CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         var booking = await _bookingService.CreateAsync(dto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { bookingId = booking.Id }, booking);
     }
@@ -54,8 +63,15 @@ public class BookingsController : ControllerBase
     [HttpPatch("{bookingId:guid}/title")]
     public async Task<IActionResult> ChangeBookingTitle([FromRoute] Guid bookingId,
         [FromBody] ChangeBookingTitleDto dto,
+        [FromServices] IValidator<ChangeBookingTitleDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _bookingService.ChangeBookingTitleAsync(bookingId, dto, cancellationToken);
         return NoContent();
     }
@@ -63,8 +79,15 @@ public class BookingsController : ControllerBase
     [HttpPatch("{bookingId:guid}/description")]
     public async Task<IActionResult> ChangeBookingDescription([FromRoute] Guid bookingId,
         [FromBody] ChangeBookingDescriptionDto dto,
+        [FromServices] IValidator<ChangeBookingDescriptionDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _bookingService.ChangeBookingDescriptionAsync(bookingId, dto, cancellationToken);
         return NoContent();
     }
@@ -72,16 +95,31 @@ public class BookingsController : ControllerBase
     [HttpPatch("{bookingId:guid}/schedule")]
     public async Task<IActionResult> ChangeBookingSchedule([FromRoute] Guid bookingId,
         [FromBody] ChangeBookingScheduleDto dto,
+        [FromServices] IValidator<ChangeBookingScheduleDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _bookingService.ChangeBookingScheduleAsync(bookingId, dto, cancellationToken);
         return NoContent();
     }
 
     [HttpPatch("{bookingId:guid}/room")]
-    public async Task<IActionResult> ChangeBookingRoom([FromRoute] Guid bookingId, [FromBody] ChangeBookingRoomDto dto,
+    public async Task<IActionResult> ChangeBookingRoom([FromRoute] Guid bookingId,
+        [FromBody] ChangeBookingRoomDto dto,
+        [FromServices] IValidator<ChangeBookingRoomDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _bookingService.ChangeBookingRoomAsync(bookingId, dto, cancellationToken);
         return NoContent();
     }
