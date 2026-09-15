@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using RoomBooking.Application.Users;
 using RoomBooking.Contracts.Users;
@@ -17,8 +18,16 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateUserDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateUserDto dto,
+        [FromServices] IValidator<CreateUserDto> validator,
+        CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         var user = await _usersService.Create(dto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { userId = user.Id }, user);
     }
@@ -72,25 +81,49 @@ public class UsersController : ControllerBase
     }
 
     [HttpPatch("{userId:guid}/name")]
-    public async Task<IActionResult> ChangeName([FromRoute] Guid userId, [FromBody] ChangeUserNameDto dto,
+    public async Task<IActionResult> ChangeName([FromRoute] Guid userId,
+        [FromBody] ChangeUserNameDto dto,
+        [FromServices] IValidator<ChangeUserNameDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _usersService.ChangeNameAsync(userId, dto, cancellationToken);
         return NoContent();
     }
 
     [HttpPatch("{userId:guid}/email")]
-    public async Task<IActionResult> ChangeEmail([FromRoute] Guid userId, [FromBody] ChangeUserEmailDto dto,
+    public async Task<IActionResult> ChangeEmail([FromRoute] Guid userId,
+        [FromBody] ChangeUserEmailDto dto,
+        [FromServices] IValidator<ChangeUserEmailDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _usersService.ChangeEmailAsync(userId, dto, cancellationToken);
         return NoContent();
     }
 
     [HttpPatch("{userId:guid}/password")]
-    public async Task<IActionResult> ChangePassword([FromRoute] Guid userId, [FromBody] ChangeUserPasswordDto dto,
+    public async Task<IActionResult> ChangePassword([FromRoute] Guid userId,
+        [FromBody] ChangeUserPasswordDto dto,
+        [FromServices] IValidator<ChangeUserPasswordDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _usersService.ChangePasswordAsync(userId, dto, cancellationToken);
         return NoContent();
     }
