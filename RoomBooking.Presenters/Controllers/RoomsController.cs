@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using RoomBooking.Application.Rooms;
 using RoomBooking.Contracts.Rooms;
@@ -16,13 +17,21 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateRoomDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateRoomDto dto,
+        [FromServices] IValidator<CreateRoomDto> validator,
+        CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         var room = await _roomsService.CreateAsync(dto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = room.Id }, room);
     }
 
-    [HttpGet("{roomId}:int")]
+    [HttpGet("{roomId:int}")]
     public async Task<IActionResult> GetById([FromRoute] int roomId, CancellationToken cancellationToken)
     {
         var room = await _roomsService.GetByIdAsync(roomId, cancellationToken);
@@ -51,17 +60,33 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPatch("{roomId:int}/name")]
-    public async Task<IActionResult> ChangeName([FromRoute] int roomId, [FromBody] ChangeRoomNameDto dto,
+    public async Task<IActionResult> ChangeName([FromRoute] int roomId,
+        [FromBody] ChangeRoomNameDto dto,
+        [FromServices] IValidator<ChangeRoomNameDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _roomsService.ChangeNameAsync(roomId, dto, cancellationToken);
         return NoContent();
     }
 
     [HttpPatch("{roomId:int}/capacity")]
-    public async Task<IActionResult> ChangeCapacity([FromRoute] int roomId, [FromBody] ChangeRoomCapacityDto dto,
+    public async Task<IActionResult> ChangeCapacity([FromRoute] int roomId,
+        [FromBody] ChangeRoomCapacityDto dto,
+        [FromServices] IValidator<ChangeRoomCapacityDto> validator,
         CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         await _roomsService.ChangeCapacityAsync(roomId, dto, cancellationToken);
         return NoContent();
     }
