@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using RoomBooking.Contracts.Users;
+using RoomBooking.Domain;
 using RoomBooking.Domain.Bookings;
 using RoomBooking.Domain.Users;
 
@@ -10,13 +11,15 @@ public class UsersService : IUsersService
     private readonly IUserRepository _userRepository;
     private readonly IBookingRepository _bookingRepository;
     private readonly ILogger<UsersService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public UsersService(IUserRepository userRepository, IBookingRepository bookingRepository,
-        ILogger<UsersService> logger)
+        ILogger<UsersService> logger, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _bookingRepository = bookingRepository;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<User> Create(CreateUserDto dto, CancellationToken cancellationToken)
@@ -25,7 +28,10 @@ public class UsersService : IUsersService
         if (existingUser != null) throw new Exception("User is already exist");
 
         var user = new User(dto.Name, dto.Email, dto.PasswordHash);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        
         _logger.LogInformation("User created with Id: {UserId}", user.Id);
+        
         return await _userRepository.AddAsync(user, cancellationToken);
     }
 
@@ -63,7 +69,7 @@ public class UsersService : IUsersService
         if (user == null) throw new KeyNotFoundException("User not found");
 
         user.ChangeName(dto.Name);
-        await _userRepository.UpdateAsync(user, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("User updated (changed name) with Id: {UserId}", user.Id);
     }
@@ -78,7 +84,7 @@ public class UsersService : IUsersService
         if (existingUser != null) throw new Exception("User is already exist");
 
         user.ChangeEmail(dto.Email);
-        await _userRepository.UpdateAsync(user, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("User updated (changed email) with Id: {UserId}", user.Id);
     }
@@ -90,7 +96,7 @@ public class UsersService : IUsersService
         if (user == null) throw new KeyNotFoundException("User not found");
 
         user.ChangePassword(dto.PasswordHash);
-        await _userRepository.UpdateAsync(user, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("User updated (changed passwordHash) with Id: {UserId}", user.Id);
     }
