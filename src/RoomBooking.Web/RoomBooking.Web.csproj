@@ -8,11 +8,13 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.19"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RoomBooking.Presenters\RoomBooking.Presenters.csproj" />
-      <ProjectReference Include="..\src\RoomBooking.Domain\RoomBooking.Domain.csproj" />
+        <ProjectReference Include="..\RoomBooking.Infrastructure\RoomBooking.Infrastructure.csproj" />
+        <ProjectReference Include="..\RoomBooking.Presenters\RoomBooking.Presenters.csproj" />
+        <ProjectReference Include="..\RoomBooking.Domain\RoomBooking.Domain.csproj" />
     </ItemGroup>
 
 </Project>

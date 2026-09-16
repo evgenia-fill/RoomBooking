@@ -13,7 +13,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         services.AddScoped<IBookingService, BookingsService>();
-        services.AddScoped<IRoomService, RoomsService>();
+        services.AddScoped<IRoomsService, RoomsService>();
         services.AddScoped<IUsersService, UsersService>();
         
         return services;

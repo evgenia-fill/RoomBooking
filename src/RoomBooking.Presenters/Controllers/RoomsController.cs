@@ -9,9 +9,9 @@ namespace RoomBooking.Presenters.Controllers;
 [Route("api/[controller]")]
 public class RoomsController : ControllerBase
 {
-    private readonly RoomsService _roomsService;
+    private readonly IRoomsService _roomsService;
 
-    public RoomsController(RoomsService roomsService)
+    public RoomsController(IRoomsService roomsService)
     {
         _roomsService = roomsService;
     }

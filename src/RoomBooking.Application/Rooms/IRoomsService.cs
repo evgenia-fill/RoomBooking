@@ -4,7 +4,7 @@ using RoomBooking.Domain.Rooms;
 
 namespace RoomBooking.Application.Rooms;
 
-public interface IRoomService
+public interface IRoomsService
 {
     Task<Room> CreateAsync(CreateRoomDto dto, CancellationToken cancellationToken);
 
