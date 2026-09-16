@@ -28,7 +28,7 @@ public class RoomsController : ControllerBase
         }
 
         var room = await _roomsService.CreateAsync(dto, cancellationToken);
-        return CreatedAtAction(nameof(GetById), new { id = room.Id }, room);
+        return CreatedAtAction(nameof(GetById), new { roomId = room.Id }, room);
     }
 
     [HttpGet("{roomId:int}")]
