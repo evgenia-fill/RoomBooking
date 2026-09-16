@@ -25,13 +25,12 @@ public class RoomsService : IRoomsService
     public async Task<Room> CreateAsync(CreateRoomDto dto, CancellationToken cancellationToken)
     {
         var room = new Room(dto.Name, dto.Capacity);
-        
-        var createdRoom = await _roomRepository.AddAsync(room, cancellationToken);
+        await _roomRepository.AddAsync(room, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Room created with Id: {RoomId}", createdRoom.Id);
+        _logger.LogInformation("Room created with Id: {RoomId}", room.Id);
         
-        return createdRoom;
+        return room;
     }
 
     public async Task<Room?> GetByIdAsync(int roomId, CancellationToken cancellationToken)

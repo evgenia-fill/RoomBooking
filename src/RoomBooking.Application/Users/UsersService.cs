@@ -28,11 +28,12 @@ public class UsersService : IUsersService
         if (existingUser != null) throw new Exception("User is already exist");
 
         var user = new User(dto.Name, dto.Email, dto.PasswordHash);
+        await _userRepository.AddAsync(user, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        
+
         _logger.LogInformation("User created with Id: {UserId}", user.Id);
-        
-        return await _userRepository.AddAsync(user, cancellationToken);
+
+        return user;
     }
 
     public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
